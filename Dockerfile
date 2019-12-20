@@ -16,13 +16,17 @@
 FROM golang:1 as build
 
 ARG VERSION="1.15"
+ARG GOARCH="amd64"
 
 WORKDIR /go/src/cloudsql-proxy
 COPY . .
 
 RUN go get ./...
-RUN go build -ldflags "-X 'main.versionString=$VERSION'" -o cloud_sql_proxy ./cmd/cloud_sql_proxy
+RUN GOARCH=${GOARCH} go build -ldflags "-X 'main.versionString=$VERSION'" -o cloud_sql_proxy ./cmd/cloud_sql_proxy
 
 # Final Stage
-FROM gcr.io/distroless/base
-COPY --from=build /go/src/cloudsql-proxy/cloud_sql_proxy /cloud_sql_proxy
+FROM debian:stretch-slim
+RUN apt-get update -y && apt-get install -y ca-certificates
+RUN useradd nonroot
+COPY --from=build --chown=nonroot /go/src/cloudsql-proxy/cloud_sql_proxy /cloud_sql_proxy
+USER nonroot
