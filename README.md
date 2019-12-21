@@ -1,3 +1,20 @@
+## arm32v7 port of Cloud SQL Proxy
+
+The official [Cloud SQL Proxy Client](https://cloud.google.com/sql/docs/mysql/sql-proxy) currently supports [amd64 only](https://github.com/GoogleCloudPlatform/cloudsql-proxy/issues/199).
+
+This project is a fork with as minimal changes as possible to support other architectures.
+
+### Supported architectures
+
+- arm32v7 (Raspberry Pi 3b+)
+
+_* Additional architectures could be added in future by setting the `GOARCH` [build argument](multiarch.md) when building on the target platform_
+
+### Docker images
+
+Images are pushed to [Docker Hub](https://hub.docker.com/r/outofcoffee/cloudsql-gce-proxy).
+
+---
 
 ## Cloud SQL Proxy
 The Cloud SQL Proxy allows a user with the appropriate permissions to connect
